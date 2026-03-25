@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  members  Member[]
+  createdAt DateTime @default(now())
+}
+
+model Member {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  role            String    // admin | parent | child
+  color           String
+  avatar          String?
+  pinHash         String
+  walletBalance   Int       @default(0)
+  lifetimePoints  Int       @default(0)
+  currentStreak   Int       @default(0)
+  prestigeLevel   Int       @default(0)
+  pointMultiplier Float     @default(1.0)
+  lastTaskDate    DateTime?
+  tasksAssigned   Task[]    @relation("AssignedTasks")
+  tasksCreated    Task[]    @relation("CreatedTasks")
+  transactions    Transaction[]
+  notifications   Notification[]
+  announcements   Announcement[]
+  announcementReads AnnouncementRead[]
+  createdAt       DateTime  @default(now())
+}
+
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?   @db.Text
+  assignedToId  String
+  assignedTo    Member    @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  createdById   String
+  createdBy     Member    @relation("CreatedTasks", fields: [createdById], references: [id])
+  category      String    // school|home|health|personal|shopping|other
+  status        String    @default("todo") // todo|in_progress|done|approved|rejected
+  priority      String    @default("medium") // low|medium|high
+  baseReward    Int       @default(10)
+  isProposed    Boolean   @default(false)
+  adminComment  String?
+  dueDate       DateTime?
+  dueTime       String?
+  isRecurring   Boolean   @default(false)
+  recurringType String?   // daily|weekly|monthly
+  transactions  Transaction[]
+  createdAt     DateTime  @default(now())
+}
+
+model Reward {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?
+  costInCredits Int
+  icon          String
+  isAvailable   Boolean   @default(true)
+  transactions  Transaction[]
+  createdAt     DateTime  @default(now())
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  memberId    String
+  member      Member   @relation(fields: [memberId], references: [id])
+  type        String   // earned|spent|prestige_reset
+  amount      Int
+  description String
+  taskId      String?
+  task        Task?    @relation(fields: [taskId], references: [id])
+  rewardId    String?
+  reward      Reward?  @relation(fields: [rewardId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id])
+  message   String
+  isRead    Boolean  @default(false)
+  taskId    String?
+  createdAt DateTime @default(now())
+}
+
+model Announcement {
+  id          String             @id @default(cuid())
+  title       String
+  content     String             @db.Text
+  createdById String
+  createdBy   Member             @relation(fields: [createdById], references: [id])
+  reads       AnnouncementRead[]
+  createdAt   DateTime           @default(now())
+}
+
+model AnnouncementRead {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  memberId       String
+  member         Member       @relation(fields: [memberId], references: [id])
+  readAt         DateTime     @default(now())
+
+  @@unique([announcementId, memberId])
+}
