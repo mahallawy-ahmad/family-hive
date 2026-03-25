@@ -11,6 +11,10 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: "خلية النحل",
   description: "تطبيق إدارة مهام العائلة",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

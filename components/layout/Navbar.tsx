@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -57,7 +58,7 @@ export function Navbar() {
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-14 flex items-center px-4 gap-3" dir="rtl">
         <div className="flex-1 flex items-center gap-2">
-          <span className="text-xl">🐝</span>
+          <Image src="/logo.svg" alt="خلية النحل" width={32} height={32} className="rounded-md" />
           <span className="font-bold text-amber-600 hidden sm:inline">خلية النحل</span>
         </div>
 

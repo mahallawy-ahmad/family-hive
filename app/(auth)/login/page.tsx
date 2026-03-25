@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +43,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 p-4" dir="rtl">
       <Card className="w-full max-w-sm shadow-lg">
         <CardHeader className="text-center pb-2">
-          <div className="text-5xl mb-2">🐝</div>
+          <div className="flex justify-center mb-2">
+            <Image src="/logo.svg" alt="خلية النحل" width={72} height={72} />
+          </div>
           <CardTitle className="text-2xl">خلية النحل</CardTitle>
           <CardDescription>تسجيل دخول مدير العائلة</CardDescription>
         </CardHeader>
