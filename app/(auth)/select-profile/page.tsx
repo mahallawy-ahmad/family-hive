@@ -62,7 +62,10 @@ export default function SelectProfilePage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-100 flex flex-col items-center justify-center p-6" dir="rtl">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🐝</div>
+          <div className="flex justify-center mb-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/favicon.png" alt="خلية النحل" width={72} height={72} className="rounded-xl" />
+          </div>
           <h1 className="text-2xl font-bold text-gray-800">خلية النحل</h1>
           <p className="text-gray-500 text-sm mt-1">من أنت؟ اختر ملفك الشخصي</p>
         </div>
